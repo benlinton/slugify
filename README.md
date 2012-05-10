@@ -1,6 +1,6 @@
 # Bash Command: Slugify
 
-Slugify is a bash command that converts filenames and directories into a web friendly format.
+Slugify is a bash command that converts filenames and directories to a web friendly format.
 
 ## Usage Help
 
@@ -34,13 +34,13 @@ Verbose mode is unnecessary in real world scenarios.
     $ slugify -v "My  file.txt"
     rename: My  file.txt -> my__file.txt
 
-#### Globs work as well:
+#### Globs (*, ?, etc.) work as well:
 
     $ slugify -v *.txt
     rename: My file.txt -> my_file.txt
     ignore: my_web_friendly_filename.txt
 
-#### Provide any number of arguments:
+#### Provide an unlimited number of arguments:
 
     slugify -v "My first file.txt" "My second file.txt"
     rename: My first file.txt -> my_first_file.txt
