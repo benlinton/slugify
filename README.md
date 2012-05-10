@@ -61,16 +61,15 @@ Verbose mode is unnecessary in real world scenarios.
     $ slugify -vd "My dashed file.txt"
     rename: My dashed file.txt -> my-dashed-file.txt
 
-The -d replaces each space with a dash.
+The -d option replaces each space with a dash.
 
     $ slugify -vd "My  dashed  file.txt"
     rename: My  dashed  file.txt -> my--dashed--file.txt
 
-Consolidate spaces with -c for cleaner filenames.
+Combine -d with -c (consolidate spaces) for a single dash between each word.
 
     $ slugify -vdc "My  dashed  file.txt"
     rename: My  dashed  file.txt -> my-dashed-file.txt
-
 
 #### Ignore case:
 
@@ -87,7 +86,7 @@ Dry run mode does not alter the filesystem in any way.
     ignore: web_friendly_filename.txt
     --- End dry run mode.
 
-Dry run mode also allows you to test filenames that don't exist. Great for testing.
+Dry run mode also allows you to test filenames that don't exist. Great for testing!
 
     slugify -n "Ghost File.txt"
     --- Begin dry run mode.
@@ -95,23 +94,24 @@ Dry run mode also allows you to test filenames that don't exist. Great for testi
     rename: Ghost File.txt -> ghost_file.txt
     --- End dry run mode.
 
-Dry run mode automatically enables verbose mode so there is no need to include the -v option.
+Dry run mode automatically enables verbose mode so there is no need to include the -v option with -n.
 
 #### Handle spaces adjacent to dashes:
+
+In this example, without -a the dashes end up surrounded by underscores.
 
     $ slugify -v "The Beatles - Yellow Submarine.mp3"
     rename: The Beatles - Yellow Submarine.mp3 -> the_beatles_-_yellow_submarine.mp3
 
+But with -a the adjacent spaces are removed.
+
     $ slugify -va "The Beatles - Yellow Submarine.mp3"
     rename: The Beatles - Yellow Submarine.mp3 -> the_beatles-yellow_submarine.mp3
 
-The -a only removes immediately adjacent spaces.
-
-    $ slugify -v "The Beatles   -   Yellow Submarine.mp3"
-    rename: The Beatles - Yellow Submarine.mp3 -> the_beatles___-___yellow_submarine.mp3
+The -a only removes spaces immediately adjacent to a dash, which may not be the desired effect (below three spaces get converted to two underscores).
 
     $ slugify -va "The Beatles   -   Yellow Submarine.mp3"
-    rename: The Beatles - Yellow Submarine.mp3 -> the_beatles__-__yellow_submarine.mp3
+    rename: The Beatles   -   Yellow Submarine.mp3 -> the_beatles__-__yellow_submarine.mp3
 
 But -c consolidates spaces into a single space and then -a will remove the left over adjacent single spaces.
 
