@@ -34,7 +34,7 @@ Verbose mode is unnecessary in real world scenarios.
     $ slugify -v "My  file.txt"
     rename: My  file.txt -> my__file.txt
 
-#### Globs (*, ?, etc.) work as well:
+#### Globs (like * and ?) work as well:
 
     $ slugify -v *.txt
     rename: My file.txt -> my_file.txt
@@ -108,7 +108,7 @@ But with -a the adjacent spaces are removed.
     $ slugify -va "The Beatles - Yellow Submarine.mp3"
     rename: The Beatles - Yellow Submarine.mp3 -> the_beatles-yellow_submarine.mp3
 
-The -a only removes spaces immediately adjacent to a dash, which may not be the desired effect (below three spaces get converted to two underscores).
+The -a only removes spaces immediately adjacent to a dash, which may not be the desired effect (below three spaces on either side of the dash get converted into two underscores because of -a).
 
     $ slugify -va "The Beatles   -   Yellow Submarine.mp3"
     rename: The Beatles   -   Yellow Submarine.mp3 -> the_beatles__-__yellow_submarine.mp3
