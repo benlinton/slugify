@@ -7,7 +7,7 @@ Slugify is a bash command that converts filenames and directories into a web fri
 Simply enter the slugify command without any arguments or with the -h option to view the usage help.
 
     $ slugify
-    usage: slugify [-cdhinrtuv] source_file ...
+    usage: slugify [-acdhintuv] source_file ...
        -a: remove spaces immediately adjacent to dashes
        -c: consolidate consecutive spaces into single space
        -d: replace spaces with dashes (instead of default underscores)
