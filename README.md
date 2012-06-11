@@ -42,7 +42,7 @@ Verbose mode is unnecessary in real world scenarios.
 
 #### Provide an unlimited number of arguments:
 
-    slugify -v "My first file.txt" "My second file.txt"
+    $ slugify -v "My first file.txt" "My second file.txt"
     rename: My first file.txt -> my_first_file.txt
     rename: My second file.txt -> my_second_file.txt
 
@@ -88,7 +88,7 @@ Dry run mode does not alter the filesystem in any way.
 
 Dry run mode also allows you to test filenames that don't exist. Great for testing!
 
-    slugify -n "Ghost File.txt"
+    $ slugify -n "Ghost File.txt"
     --- Begin dry run mode.
     not found: Ghost File.txt
     rename: Ghost File.txt -> ghost_file.txt
