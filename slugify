@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #: Name        : slugify
-#: Date        : 2012-05-09
+#: Date        : 2012-05-01
 #: Author      : "Benjamin Linton" <developer@benlinton.com>
 #: Version     : 1.0.0
 #: Description : Convert filenames into a web friendly format.
@@ -60,7 +60,7 @@ if [[ ! -n "$1" ]]; then
   exit 0
 fi
 
-# Identify case insensitive filesystems
+## Identify case insensitive filesystems
 case_sensitive_filesystem=1
 case $OSTYPE in
   darwin*) case_sensitive_filesystem=0 ;; # OS X
@@ -144,4 +144,3 @@ done
 if [ $dry_run -eq 1 ]; then
   echo "--- End dry run mode."
 fi
-
