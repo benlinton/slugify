@@ -11,6 +11,7 @@ script_name=${0##*/}
 dashes_omit_adjacent_spaces=0
 consolidate_spaces=0
 space_replace_char='_'
+colon_replace_char='_'
 ignore_case=0
 dry_run=0
 dashes_to_spaces=0
@@ -25,7 +26,7 @@ function print_usage(){
   echo "usage: $script_name [-$opt_string] source_file ..."
   echo "   -a: remove spaces immediately adjacent to dashes"
   echo "   -c: consolidate consecutive spaces into single space"
-  echo "   -d: replace spaces with dashes (instead of default underscores)"
+  echo "   -d: replace spaces and colons with dashes (instead of default underscores)"
   echo "   -h: help"
   echo "   -i: ignore case"
   echo "   -n: dry run"
@@ -40,7 +41,7 @@ do
   case $opt in
     a) dashes_omit_adjacent_spaces=1 ;;
     c) consolidate_spaces=1 ;;
-    d) space_replace_char='-' ;;
+    d) space_replace_char='-' && colon_replace_char='-' ;;
     h) print_usage; exit 0 ;;
     i) ignore_case=1 ;;
     n) dry_run=1 ;;
@@ -115,6 +116,9 @@ for source in "$@"; do
 
   ## Replace spaces with underscores or dashes
   target=$(echo "$target" | tr ' ' "$space_replace_char")
+
+  ## Replace colons with underscores or dashes (for MacOS X)
+  target=$(echo "$target" | tr ':' "$colon_replace_char")
 
   ## Handle moving the source to target
   if [ "$target" == "$source" ]; then
