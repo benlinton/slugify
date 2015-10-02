@@ -11,6 +11,7 @@ script_name=${0##*/}
 dashes_omit_adjacent_spaces=0
 consolidate_spaces=0
 space_replace_char='_'
+foreign_characters=0
 ignore_case=0
 dry_run=0
 dashes_to_spaces=0
@@ -18,7 +19,7 @@ underscores_to_spaces=0
 verbose=0
 
 ## Initialize valid options
-opt_string=acdhintuv
+opt_string=acdfhintuv
 
 ## Usage function
 function print_usage(){
@@ -26,6 +27,7 @@ function print_usage(){
   echo "   -a: remove spaces immediately adjacent to dashes"
   echo "   -c: consolidate consecutive spaces into single space"
   echo "   -d: replace spaces with dashes (instead of default underscores)"
+  echo "   -f: translate foreign characters ('ß' becomes 'ss' etc.)"
   echo "   -h: help"
   echo "   -i: ignore case"
   echo "   -n: dry run"
@@ -41,6 +43,7 @@ do
     a) dashes_omit_adjacent_spaces=1 ;;
     c) consolidate_spaces=1 ;;
     d) space_replace_char='-' ;;
+    f) foreign_characters=1 ;;
     h) print_usage; exit 0 ;;
     i) ignore_case=1 ;;
     n) dry_run=1 ;;
@@ -86,6 +89,17 @@ for source in "$@"; do
 
   ## Initialize target
   target="$source"
+
+  ## Optionally translate foreign characters
+  ## (Only supports the non-accented ISO basic Latin alphabet)
+  if [ $foreign_characters -eq 1 ]; then
+    target=$(echo "$target" | sed 's/@/at/g')
+    target=$(echo "$target" | sed 's/ß/ss/g')
+    target=$(echo "$target" | sed 's/æ/ae/g')
+    target=$(echo "$target" | sed 's/Æ/ae/g')
+    target=$(echo "$target" | sed -E 's/œ|ø/oe/g')
+    target=$(echo "$target" | sed -E 's/Œ|ø/oe/g')
+  fi
 
   ## Optionally convert to lowercase
   if [ $ignore_case -eq 0 ]; then
