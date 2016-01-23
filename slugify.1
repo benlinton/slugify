@@ -1,0 +1,336 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "SLUGIFY" "1" "January 2016" "" ""
+.
+.SH "NAME"
+\fBslugify\fR \- convert filenames and directories to a web friendly format
+.
+.SH "SYNOPSIS"
+\fBslugify\fR [\-acdhintuv] \fIsource_file\fR \.\.\.
+.
+.SH "DESCRIPTION"
+\fBSlugify\fR converts filenames and directories to a web friendly format\. Before running any command, consider a dry run \fB\-n\fR before hand\.
+.
+.P
+Options include:
+.
+.TP
+\fB\-a\fR
+Remove spaces immediately adjacent to dashes\.
+.
+.TP
+\fB\-c\fR
+Consolidate consecutive spaces into single space\.
+.
+.TP
+\fB\-d\fR
+Replace spaces with dashes (instead of default underscores)\.
+.
+.TP
+\fB\-h\fR
+Display help\.
+.
+.TP
+\fB\-i\fR
+Ignore case\.
+.
+.TP
+\fB\-n\fR
+Dry run\.
+.
+.TP
+\fB\-t\fR
+Treat existing dashes as spaces\.
+.
+.TP
+\fB\-u\fR
+Treat existing underscores as spaces (useful with \fB\-a\fR, \fB\-c\fR, or \fB\-d\fR)\.
+.
+.TP
+\fB\-v\fR
+Verbose mode\.
+.
+.SH "EXAMPLES"
+Note, most examples below are run in verbose mode (\fB\-v\fR) to help illustrate the results\. Verbose mode is unnecessary in real world scenarios\.
+.
+.P
+\fBProvide escaped filenames:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v My\e \e file\.txt
+rename: My  file\.txt \-> my__file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBAlternatively provide unescaped filenames inside quotes:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v "My  file\.txt"
+rename: My  file\.txt \-> my__file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBGlobs (like * and ?) work as well:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v *\.txt
+rename: My file\.txt \-> my_file\.txt
+ignore: my_web_friendly_filename\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBProvide an unlimited number of arguments:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v "My first file\.txt" "My second file\.txt"
+rename: My first file\.txt \-> my_first_file\.txt
+rename: My second file\.txt \-> my_second_file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBDirectories are also supported:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v "My Directory"
+rename: My Directory \-> my_directory
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBConsolidate consecutive spaces into single spaces:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vc "My    consolidated    file\.txt"
+rename: My    consolidated    file\.txt \-> my_consolidated_file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBReplace spaces with dashes:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vd "My dashed file\.txt"
+rename: My dashed file\.txt \-> my\-dashed\-file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+The \-d option replaces each space with a dash\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vd "My  dashed  file\.txt"
+rename: My  dashed  file\.txt \-> my\-\-dashed\-\-file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Combine \fB\-d\fR with \fB\-c\fR (consolidate spaces) for a single dash between each word\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vdc "My  dashed  file\.txt"
+rename: My  dashed  file\.txt \-> my\-dashed\-file\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBIgnore case:\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vi "UPPER CASE FILE\.txt"
+rename: UPPER CASE FILE\.txt \-> UPPER_CASE_FILE\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBPlay it safe with a dry run:\fR
+.
+.P
+Dry run mode does not alter the filesystem in any way\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-n *
+\-\-\- Begin dry run mode\.
+rename: My file\.txt \-> my_file\.txt
+ignore: web_friendly_filename\.txt
+\-\-\- End dry run mode\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Dry run mode also allows you to test filenames that don\'t exist\. Great for testing!
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-n "Ghost File\.txt"
+\-\-\- Begin dry run mode\.
+not found: Ghost File\.txt
+rename: Ghost File\.txt \-> ghost_file\.txt
+\-\-\- End dry run mode\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Dry run mode automatically enables verbose mode so there is no need to include the \fB\-v\fR option with \fB\-n\fR\.
+.
+.P
+\fBHandle spaces adjacent to dashes:\fR
+.
+.P
+In this example, without \fB\-a\fR the dashes end up surrounded by underscores\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-v "The Beatles \- Yellow Submarine\.mp3"
+rename: The Beatles \- Yellow Submarine\.mp3 \-> the_beatles_\-_yellow_submarine\.mp3
+.
+.fi
+.
+.IP "" 0
+.
+.P
+But with \fB\-a\fR the adjacent spaces are removed\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-va "The Beatles \- Yellow Submarine\.mp3"
+rename: The Beatles \- Yellow Submarine\.mp3 \-> the_beatles\-yellow_submarine\.mp3
+.
+.fi
+.
+.IP "" 0
+.
+.P
+The \fB\-a\fR only removes spaces immediately adjacent to a dash, which may not be the desired effect (below three spaces on either side of the dash get converted into two underscores because of \fB\-a\fR)\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-va "The Beatles   \-   Yellow Submarine\.mp3"
+rename: The Beatles   \-   Yellow Submarine\.mp3 \-> the_beatles__\-__yellow_submarine\.mp3
+.
+.fi
+.
+.IP "" 0
+.
+.P
+But \fB\-c\fR consolidates spaces into a single space and then \-a will remove the left over adjacent single spaces\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vac "The Beatles   \-   Yellow Submarine\.mp3"
+rename: The Beatles \- Yellow Submarine\.mp3 \-> the_beatles\-yellow_submarine\.mp3
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBConvert existing underscores into dashes\fR
+.
+.P
+The \fB\-u\fR treats underscores as spaces and \fB\-d\fR converts spaces into dashes\.
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vud "Spaces Dashes\-And_Underscores\.txt"
+rename: Spaces Dashes\-And_Underscores\.txt \-> spaces\-dashes\-and\-underscores\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\fBConvert existing dashes into underscores\fR
+.
+.IP "" 4
+.
+.nf
+
+$ slugify \-vt "Spaces Dashes\-And_Underscores\.txt"
+rename: Spaces Dashes\-And_Underscores\.txt \-> spaces_dashes_and_underscores\.txt
+.
+.fi
+.
+.IP "" 0
+.
+.SH "BUGS"
+\fIhttps://github\.com/benlinton/slugify/issues\fR
+.
+.SH "COPYRIGHT"
+Slugify is Copyright (C) 2012 Ben Linton \fIhttps://github\.com/benlinton/slugify\fR
+.
+.SH "SEE ALSO"
+man(1), manpages(5)
