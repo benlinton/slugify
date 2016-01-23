@@ -2,7 +2,7 @@
 #: Name        : slugify
 #: Date        : 2012-05-01
 #: Author      : "Benjamin Linton" <developer@benlinton.com>
-#: Version     : 1.0.0
+#: Version     : 1.0.1
 #: Description : Convert filenames into a web friendly format.
 #: Options     : See print_usage() function.
 
