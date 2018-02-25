@@ -13,6 +13,7 @@ Simply enter the slugify command without any arguments or with the -h option to 
        -d: replace spaces with dashes (instead of default underscores)
        -h: help
        -i: ignore case
+       -k: NFKD normalisation
        -n: dry run
        -t: treat existing dashes as spaces
        -u: treat existing underscores as spaces (useful with -a, -c, or -d)

@@ -7,7 +7,7 @@
 \fBslugify\fR \- convert filenames and directories to a web friendly format
 .
 .SH "SYNOPSIS"
-\fBslugify\fR [\-acdhintuv] \fIsource_file\fR \.\.\.
+\fBslugify\fR [\-acdhikntuv] \fIsource_file\fR \.\.\.
 .
 .SH "DESCRIPTION"
 \fBSlugify\fR converts filenames and directories to a web friendly format\. Before running any command, consider a dry run \fB\-n\fR before hand\.
@@ -34,6 +34,10 @@ Display help\.
 .TP
 \fB\-i\fR
 Ignore case\.
+.
+.TP
+\fB\-k\fR
+NFKD normalisation\.
 .
 .TP
 \fB\-n\fR
