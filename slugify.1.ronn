@@ -3,7 +3,7 @@ slugify(1) -- convert filenames and directories to a web friendly format
 
 ## SYNOPSIS
 
-`slugify` [-acdhintuv] <source_file> ...
+`slugify` [-acdhikntuv] <source_file> ...
 
 ## DESCRIPTION
 
@@ -29,6 +29,9 @@ Options include:
 
   * `-i`:
     Ignore case.
+
+  * `-k`:
+    NFKD normalisation.
 
   * `-n`:
     Dry run.

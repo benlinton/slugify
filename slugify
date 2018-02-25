@@ -15,10 +15,11 @@ ignore_case=0
 dry_run=0
 dashes_to_spaces=0
 underscores_to_spaces=0
+nfkd_normalisation=0
 verbose=0
 
 ## Initialize valid options
-opt_string=acdhintuv
+opt_string=acdhikntuv
 
 ## Usage function
 function print_usage(){
@@ -28,10 +29,20 @@ function print_usage(){
   echo "   -d: replace spaces with dashes (instead of default underscores)"
   echo "   -h: help"
   echo "   -i: ignore case"
+  echo "   -k: NFKD normalisation"
   echo "   -n: dry run"
   echo "   -t: treat existing dashes as spaces"
   echo "   -u: treat existing underscores as spaces (useful with -a, -c, or -d)"
   echo "   -v: verbose"
+}
+
+## NFKD normalisation function
+function nfkd(){
+  if [ -x "$(command -v python3)" ]; then
+    python3 -c 'import sys,unicodedata;print(unicodedata.normalize("NFKD", sys.argv[1]).encode("ascii", "ignore"))' "$1"
+  else
+    python2 -c 'import sys,unicodedata;print unicodedata.normalize("NFKD", unicode(sys.argv[1], "utf-8")).encode("ascii", "ignore")' "$1"
+  fi
 }
 
 ## For each provided option arg
@@ -46,6 +57,7 @@ do
     n) dry_run=1 ;;
     t) dashes_to_spaces=1 ;;
     u) underscores_to_spaces=1 ;;
+    k) nfkd_normalisation=1 ;;
     v) verbose=1 ;;
     *) exit 1 ;;
   esac
@@ -86,6 +98,11 @@ for source in "$@"; do
 
   ## Initialize target
   target="$source"
+
+  ## Optionally do an NFKD normalisation
+  if [ $nfkd_normalisation -eq 1 ]; then
+    target=$(nfkd "$target")
+  fi
 
   ## Optionally convert to lowercase
   if [ $ignore_case -eq 0 ]; then
